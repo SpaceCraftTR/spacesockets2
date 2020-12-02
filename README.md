@@ -1,5 +1,5 @@
 # SpaceSockets 2.0
-## Makes socket programming much easier for C++ developers.
+## Makes socket programming much easier for C++ developers!
 
 Hello, developers! Here is the SpaceSockets 2.0 (a.k.a SpaceSockets2)!
 
