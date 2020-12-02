@@ -37,6 +37,13 @@ then
 else
     echo "\n\n\n\nBuild of Example TCP Messaging Server application has failed!\n\n"
 fi
+g++ example/ExampleTCPWebClient.cpp -o build/example_web_client
+if [ $? -eq 0 ]
+then
+    echo "\n\n\n\nExample TCP WebClient app has been built successfully!"
+else
+    echo "\n\n\n\nBuild of Example TCP WebClient application has failed!\n\n"
+fi
 g++ example/ExampleTCPWebServer.cpp -o build/example_tcp_webserver
 if [ $? -eq 0 ]
 then
