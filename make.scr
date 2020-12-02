@@ -4,4 +4,5 @@ system("g++ example/SpacePing.cpp -o build/spaceping");
 system("g++ example/ExampleTCPMessagingClient.cpp -o build/example_tcp_messaging_client");
 system("g++ example/ExampleTCPMessagingServer.cpp -o build/example_tcp_messaging_server");
 system("g++ example/ExampleTCPWebServer.cpp -o build/example_tcp_webserver");
+system("g++ example/ExampleTCPWebClient.cpp -o build/example_web_client");
 return
