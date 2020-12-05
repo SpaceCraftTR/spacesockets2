@@ -31,7 +31,7 @@ namespace SpaceSockets2{
 
         public: 
                 /*
-                Constructor of TCP class. Set the mode for your purpose. 
+                Constructor of TCP class. Set the mode for your purpose of use. 
                 
                 There are 2 modes available in SpaceSockets2:
                         -CLIENT_TCP is to create TCP client applications,
@@ -93,7 +93,7 @@ namespace SpaceSockets2{
 
 
                 }  
-                /*Listens on a spesific socket for incoming connections. Useful for server mode but also available for client applications.*/
+                /*Listens to a spesific socket for incoming connections. Useful for server mode but also available for client applications.*/
                 int tcp_listen(int socket_to_listen){
 
                         if((listen_fd = listen(socket_to_listen,connection_limit))< 0){
@@ -105,7 +105,7 @@ namespace SpaceSockets2{
 
                                 return SUCCESS;
                 }    
-                /*Accepts an incoming connection and returns the newly created file descryptor.*/
+                /*Accepts incoming connections and returns the newly created file descryptor.*/
                 int tcp_accept_connection(){
                         
                         if(this->mode & SERVER_TCP){
@@ -134,7 +134,7 @@ namespace SpaceSockets2{
                         }
 
                 }
-                /*Receives a data coming from the socket that had been specified.*/
+                /*Receives some data that are coming through the socket that had been specified.*/
                 template <class tcpType>
                 int tcp_receive_data(tcpType &buffer, int file_desc){ 
 
@@ -261,7 +261,7 @@ namespace SpaceSockets2{
                         return this->port_number;
 
                 }
-                /*Returns socket file descryptor.*/
+                /*Returns socket file descriptor.*/
                 int get_socket_fd(){
 
                         return this->socket_fd;
@@ -273,7 +273,7 @@ namespace SpaceSockets2{
                         this->flags = new_flags;
 
                 }
-                ~tcp(){ //Destructor of TCP class.
+                ~tcp(){ //Destructor of the TCP class.
 
                         if(shutdown(socket_fd,SHUT_RDWR) < 0){
 
@@ -304,9 +304,9 @@ namespace SpaceSockets2{
         
         public:
                 /*
-                Constructor of UDP class.
+                Constructor of the UDP class.
                 
-                If no IP address has been specified, SpaceSockets2 automatically assigns INADDR_ANY to IP address, which is not suitable if you want to communicate with a remote computer.
+                If no IP address or invalid address has been specified, SpaceSockets2 automatically assigns 127.0.0.1 to IP address, which is not suitable if you want to communicate with a remote computer.
                 */
                 udp(char ip_address[],int flags = WRITE_TO_TERMINAL, int ip_standard = IPV4, in_port_t port_number = PORT){ 
                         this->flags = flags;
