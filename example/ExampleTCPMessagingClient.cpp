@@ -19,10 +19,14 @@ int main(){
 
         while(1){
 
-            
+            bzero(recv_buffer,100);
             if(!tcp_client.tcp_receive_data(recv_buffer,tcp_client.get_socket_fd())){
+                if(strlen(recv_buffer) > 0){
 
-                std::cout<<"Server says: "<<recv_buffer<<std::endl;
+                    std::cout<<"Server says: "<<recv_buffer<<std::endl;
+                    bzero(recv_buffer,100);
+                }
+                
 
             }
 

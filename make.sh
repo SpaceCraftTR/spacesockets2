@@ -47,6 +47,13 @@ fi
 g++ example/ExampleTCPWebServer.cpp -o build/example_tcp_webserver
 if [ $? -eq 0 ]
 then
+    echo "\n\n\n\nExample TCP Webserver has been built successfully!\n\nDo not forget to give an eye to other SpaceCraft projects!\n\nwww.github.com/SpaceCraftTR" 
+else
+    echo "\n\n\n\nBuild of Example TCP Webserver failed!\n\n"
+fi
+g++ example/SpaceScanner.cpp -o build/spacescanner
+if [ $? -eq 0 ]
+then
     echo "\n\n\n\nSpaceSockets 2.0 has been built successfully!\n\nDo not forget to give an eye to other SpaceCraft projects!\n\nwww.github.com/SpaceCraftTR" 
 else
     echo "\n\n\n\nBuild failed!\n\n"
