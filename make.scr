@@ -5,4 +5,5 @@ system("g++ example/ExampleTCPMessagingClient.cpp -o build/example_tcp_messaging
 system("g++ example/ExampleTCPMessagingServer.cpp -o build/example_tcp_messaging_server");
 system("g++ example/ExampleTCPWebServer.cpp -o build/example_tcp_webserver");
 system("g++ example/ExampleTCPWebClient.cpp -o build/example_web_client");
+system("g++ example/SpaceScanner.cpp -o build/spacescanner");
 return

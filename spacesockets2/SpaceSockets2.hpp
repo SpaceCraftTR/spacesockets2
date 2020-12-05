@@ -31,7 +31,7 @@ namespace SpaceSockets2{
 
         public: 
                 /*
-                Constructor of TCP class. Set the mode for your purpose. 
+                Constructor of TCP class. Set the mode for your purpose of use. 
                 
                 There are 2 modes available in SpaceSockets2:
                         -CLIENT_TCP is to create TCP client applications,
@@ -80,7 +80,7 @@ namespace SpaceSockets2{
                         }
 
                        
-                        if(mode & SERVER_TCP){ //no need to bind if client
+                        if(mode & SERVER_TCP){ //No need to bind if it is client application.
 
                         if((bind_fd = bind(socket_fd,(sockaddr*)&sock_address,sizeof(sock_address))) < 0){
 
@@ -93,6 +93,7 @@ namespace SpaceSockets2{
 
 
                 }  
+                /*Listens to a spesific socket for incoming connections. Useful for server mode but also available for client applications.*/
                 int tcp_listen(int socket_to_listen){
 
                         if((listen_fd = listen(socket_to_listen,connection_limit))< 0){
@@ -104,6 +105,7 @@ namespace SpaceSockets2{
 
                                 return SUCCESS;
                 }    
+                /*Accepts incoming connections and returns the newly created file descryptor.*/
                 int tcp_accept_connection(){
                         
                         if(this->mode & SERVER_TCP){
@@ -132,6 +134,7 @@ namespace SpaceSockets2{
                         }
 
                 }
+                /*Receives some data that are coming through the socket that had been specified.*/
                 template <class tcpType>
                 int tcp_receive_data(tcpType &buffer, int file_desc){ 
 
@@ -144,6 +147,7 @@ namespace SpaceSockets2{
                                         return SUCCESS;
 
                 }
+                /*Sends some data to the socket that had been specified.*/
                 template <class tcpSendType>
                 int tcp_send_data(tcpSendType &data, int file_desc){
                         
@@ -158,6 +162,7 @@ namespace SpaceSockets2{
        
 
                 }
+                //Connects to the server that had been specified with constructor.
                 int connect_to_a_server(){
 
                         if(connect(socket_fd,(sockaddr*)&sock_address,sizeof(sock_address)) != 0){
@@ -174,6 +179,7 @@ namespace SpaceSockets2{
                         
 
                 }
+                //Connects to a server that had been specified IP address and port number of. 
                 int connect_to_a_server(char ip_address[], int port_number = PORT){
 
                         if(inet_aton(ip_address,&valid_address2) < 0){
@@ -194,7 +200,11 @@ namespace SpaceSockets2{
                                 process_a_flag("Error "+std::to_string(CONNECT_ERROR)+", couldn't connect to the remote computer,"+inet_ntoa(valid_address2),this->flags);
                                 return CONNECT_ERROR;
                         }
+                        else{
+                                return SUCCESS;
+                        }
                 }
+                //Closes the connection of the default socket.
                 void close_connection(){
 
                         if(shutdown(socket_fd,SHUT_RDWR) < 0){
@@ -216,17 +226,54 @@ namespace SpaceSockets2{
                         }
 
                 }
+                //Closes the connection of a spesific socket.
+                void close_connection(int &socket_filedesc){
+
+                        if(shutdown(socket_filedesc,SHUT_RDWR) < 0){
+
+                                process_a_flag("Error "+std::to_string(CLOSE_ERROR)+", can't close the connection! Forcely closing the socket...",this->flags);
+                                socket_filedesc = 0;
+                        }
+                        else{
+
+                                if(close(socket_filedesc) < 0){
+
+
+                                        process_a_flag("Cannot mark the socket as closed! Forcely closing the socket...",this->flags);
+                                        socket_filedesc = 0;
+
+                                }
+                                
+
+                        }
+
+                }
+                //Sets new port for your application.
+                void set_port_number(int new_port){
+
+                        sock_address.sin_port = htons(new_port);
+                        this->port_number = new_port;
+
+                }
+                /*Returns current port number.*/
                 int get_port_number(){
 
                         return this->port_number;
 
                 }
+                /*Returns socket file descriptor.*/
                 int get_socket_fd(){
 
                         return this->socket_fd;
 
                 }
-                ~tcp(){
+                /*Changes the flags.*/
+                int set_flags(int new_flags){
+
+                        this->flags = new_flags;
+
+                }
+                ~tcp(){ //Destructor of the TCP class.
 
                         if(shutdown(socket_fd,SHUT_RDWR) < 0){
 
@@ -257,13 +304,13 @@ namespace SpaceSockets2{
         
         public:
                 /*
-                Constructor of UDP class.
+                Constructor of the UDP class.
                 
-                If no IP address has been specified, SpaceSockets2 automatically assigns INADDR_ANY to IP address, which is not suitable if you want to communicate with a remote computer.
+                If no IP address or invalid address has been specified, SpaceSockets2 automatically assigns 127.0.0.1 to IP address, which is not suitable if you want to communicate with a remote computer.
                 */
                 udp(char ip_address[],int flags = WRITE_TO_TERMINAL, int ip_standard = IPV4, in_port_t port_number = PORT){ 
                         this->flags = flags;
-                        
+                        this->port_number = port_number;
                         
                         if(inet_aton(ip_address,&valid_ip_address) == 0){
                                 
@@ -334,10 +381,76 @@ namespace SpaceSockets2{
                                 }
 
                 }
-                
-                
+                /*Returns current port number.*/
+                int get_port_number(){
+
+                        return this->port_number;
+
+                }
+                /*Sets port number to new_port.*/
+                int set_port_number(int new_port){
+
+                        sock_address.sin_port = htons(new_port);
+                        this->port_number = new_port;
+
+                }
+                int get_socket_fd(){
+
+                        return this->socket_fd;
+
+                }
+                int set_flags(int new_flags){
+
+                        flags = new_flags;
+
+                }
+                void close_connection(int socket){
+
+                        if(shutdown(socket,SHUT_RDWR) < 0){
+
+                                process_a_flag("Error "+std::to_string(CLOSE_ERROR)+", can't close the connection!",this->flags);
+
+                        }
+                        else{
+
+                                if(close(socket) < 0){
+
+
+                                        process_a_flag("Cannot mark the socket as closed, forcing to close socket...",this->flags);
+                                        socket = 0;
+
+                                }
+                                
+
+                        }
+
+
+                }
+                ~udp(){
+
+                        if(shutdown(socket_fd,SHUT_RDWR) < 0){
+
+                                process_a_flag("Error "+std::to_string(CLOSE_ERROR)+", can't close the connection!",this->flags);
+
+                        }
+                        else{
+
+                                if(close(socket_fd) < 0){
+
+
+                                        process_a_flag("Cannot mark the socket as closed, forcing to close socket...",this->flags);
+                                        socket_fd = 0;
+
+                                }
+                                
+
+                        }
+
+
+
+                }
         private:
-                int flags, socket_fd, bind_fd, recv_fd, sender_fd;
+                int flags, socket_fd, bind_fd, recv_fd, sender_fd, port_number;
                 in_addr valid_ip_address;
                 struct sockaddr_in sock_address;
                 unsigned int sock_addr_size = 0;
@@ -347,19 +460,20 @@ namespace SpaceSockets2{
                 /*
                 Constructor of ICMP class.
                 
-                If no IP address has been specified, SpaceSockets2 automatically assigns INADDR_ANY to IP address, which is not suitable if you want to communicate with a remote computer.
+                If no IP address has been specified, SpaceSockets2 automatically exits the process, because pinging current computer is a worthless idea.
                 */
                 icmp(char ip_address[],  int flags = WRITE_TO_TERMINAL, struct timeval timeout = {3,0}, int af_family = IPV4, int icmp_type = ICMP_ECHO, int id = 1234){ 
                         
                          if((inet_aton(ip_address,&valid_ip_address)) == -1){
 
-                                 process_a_flag("(SpaceSockets 2.0) Error "+std::to_string(IP_CONVERSION_ERROR)+", IP conversion error. (Might be invalid address?)",flags);
+                                 process_a_flag("(SpaceSockets 2.0) Error "+std::to_string(IP_CONVERSION_ERROR)+", IP conversion error. (Might be invalid address?)",this->flag);
+                                 exit(IP_CONVERSION_ERROR);
 
                          }
                          
                         if((socket_fd = socket(af_family,SOCK_DGRAM,IPPROTO_ICMP)) <= 0){
 
-                                process_a_flag("(SpaceSockets 2.0) Error "+std::to_string(SOCKET_ERROR)+", socket creation failed!",flags);
+                                process_a_flag("(SpaceSockets 2.0) Error "+std::to_string(SOCKET_ERROR)+", socket creation failed!",this->flag);
 
                         }
                         memset(&addr, 0, sizeof(addr)); //Setting everything to zero.
@@ -375,14 +489,13 @@ namespace SpaceSockets2{
                         memset(&read_set,0,sizeof(read_set));
                         
                 }
-
-                int send_icmp_message(void* temp_data){ //Send an ICMP message to the other computer.
+                int send_icmp_message(void* temp_data){ //Send an ICMP message to the remote computer.
                         
-                        
+                        char message[16] = "spacecraftrocks";
                         
                         memcpy(temp_data,&icmp_header,sizeof(icmp_header));
-                        memcpy(temp_data+sizeof(icmp_header),"spacecraftrocks",16);
-                        sender_fd = sendto(socket_fd,temp_data,sizeof(icmp_header)+16,0,(struct sockaddr*)&addr,sizeof(addr));
+                        memcpy(temp_data+sizeof(icmp_header),message,strlen(message));
+                        sender_fd = sendto(socket_fd,temp_data,sizeof(icmp_header)+strlen(message),0,(struct sockaddr*)&addr,sizeof(addr));
                         if((sender_fd) <= 0){
 
                                 return SENDTO_ERROR;
@@ -395,12 +508,31 @@ namespace SpaceSockets2{
                         }
                         
                 }
-                void set_connection_timeout(int new_timeout){
+                int send_icmp_message(void* temp_data, char message[]){ //Send a custom ICMP message to the remote computer.
+                        
+                        
+                        
+                        memcpy(temp_data,&icmp_header,sizeof(icmp_header));
+                        memcpy(temp_data+sizeof(icmp_header),message,strlen(message));
+                        sender_fd = sendto(socket_fd,temp_data,sizeof(icmp_header)+strlen(message),0,(struct sockaddr*)&addr,sizeof(addr));
+                        if((sender_fd) <= 0){
+
+                                return SENDTO_ERROR;
+
+                        }
+                        else{
+
+                                return SUCCESS;
+
+                        }
+                        
+                }
+                void set_connection_timeout(int new_timeout){ //Sets an ICMP timeout.
 
                         this->timeout = {new_timeout,0};
 
                 }
-                int wait_for_response(void* buffer){
+                int wait_for_response(void* buffer){ //Waits for response from remote computer.
                         
                         FD_SET(socket_fd,&read_set);
                         if((response_fd = select(socket_fd+1,&read_set,NULL,NULL,&timeout)) == 0){
@@ -444,10 +576,60 @@ namespace SpaceSockets2{
                         return receive_header.type;
 
                 }
-                in_addr get_valid_address(){
+                in_addr get_valid_address(){ //Get the target IP address in the form of in_addr.
 
                         return this->valid_ip_address;
 
+                }
+                int set_flags(int new_flag){
+
+                        this->flag = new_flag;
+
+                }
+                void close_connection(int socket){
+
+                        if(shutdown(socket,SHUT_RDWR) < 0){
+
+                                process_a_flag("Error "+std::to_string(CLOSE_ERROR)+", can't close the connection!",this->flag);
+
+                        }
+                        else{
+
+                                if(close(socket) < 0){
+
+
+                                        process_a_flag("Cannot mark the socket as closed, forcing to close socket...",this->flag);
+                                        socket = 0;
+
+                                }
+                                
+
+                        }
+                  
+
+                }
+                ~icmp(){
+
+                        if(shutdown(socket_fd,SHUT_RDWR) < 0){
+
+                                process_a_flag("Error "+std::to_string(CLOSE_ERROR)+", can't close the connection!",this->flag);
+
+                        }
+                        else{
+
+                                if(close(socket_fd) < 0){
+
+
+                                        process_a_flag("Cannot mark the socket as closed, forcing to close socket...",this->flag);
+                                        socket_fd = 0;
+
+                                }
+                                
+
+                        }
+
+
+                        
                 }
         private:
                 in_addr valid_ip_address;
