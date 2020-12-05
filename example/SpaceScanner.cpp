@@ -12,7 +12,7 @@ void check_ports(int starting_port, int ending_port, char ip_buffer[]){
         if(space_netcat.connect_to_a_server(ip_buffer,i)){
 
             //std::cout<<"Port "<<i<<" is not available for connections on "<<ip_buffer<<"!\n";
-
+             /*Left the line above to you. If you want or need, you can decommentize the code above.*/
         }
         else{
 
@@ -27,7 +27,7 @@ void check_ports(int starting_port, int ending_port, char ip_buffer[]){
 }
 int main(int argc, char* argv[]){
 
-    std::ofstream output_netcat("netcat-log.txt");
+    
     char ip_buffer[20];
     unsigned short int starting_port, ending_port;    
     std::cout<<"Please enter the target IP address that will be checked for opened ports."<<std::endl;
