@@ -25,8 +25,21 @@ SpaceSockets is licensed under the terms of MIT License.
 #include <fstream>
 #include <sys/select.h>
 #include "definitions.hpp"
+#include <netdb.h>
 
 namespace SpaceSockets2{
+             char* dns_resolve(char domain_address[]){
+
+                      hostent *ht;
+	              in_addr** address;
+		
+                      if ((ht = gethostbyname(domain_address)) == nullptr) 
+                       {
+                         exit(DNS_ERROR);
+                       }
+                     address = (in_addr**)ht->h_addr_list;
+                     return inet_ntoa(**address);
+                }
         class tcp{
 
         public: 
