@@ -17,7 +17,9 @@ You can find really great examples under "example" folder that are made by using
 ```
 
 ## Important warning for developers
-Porting SpaceSockets2 on Windows would be amazing. We're planning to add Winsock support to run SpaceSockets2 under Windows.
+~~Porting SpaceSockets2 on Windows would be amazing. We're planning to add Winsock support to run SpaceSockets2 under Windows.~~
+
+There is an ongoing development for porting SpaceSockets2 on Winsock. Check our Instagram page for more information about development.
 
 #### Disclaimer
 SpaceSockets2 is licensed under the terms of MIT License. 
