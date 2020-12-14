@@ -17,14 +17,16 @@ You can find really great examples under "example" folder that are made by using
 ```
 
 ## A big update for SpaceSockets2: Windows port
-SpaceSockets2.hpp includes Windows code that will be used if you are using Windows. Without changing one line of your application code, your SpaceSockets2 application can run under Windows. See the examples for further information.
+SpaceSockets2 includes WinSock code that can be used if you are compiling your application on Windows. Without changing any lines of your application code, you can port your SpaceSockets2 applications to Windows. 
 
-#### Disclaimer
+Refer to the examples for further information.
+
+### Disclaimer
 SpaceSockets2 is licensed under the terms of MIT License. 
 
 ### Tutorials for developers
 SpaceSockets2's GitHub site will be coming soon! We'll rewrite example applications and see how easy to write programs with SpaceSockets2 is.
 
-#### Follow us to keep up-to-date!
+### Follow us to keep up-to-date!
 [SpaceCraft on Instagram](http://instagram.com/spacecraft_tr)
 [SpaceCraft on GitHub](http://github.com/SpaceCraftTR)
