@@ -7,7 +7,7 @@ Hello, developers! Here is the SpaceSockets 2.0 (a.k.a SpaceSockets2)!
 
 We've fixed some connection related bugs and added new functionalities to SpaceSockets 2.0. 
 
-You can find really great examples under "example" folder that are made by using SpaceSockets2. For example, an implementation of "ping" utility or a web server that send a skeleton webpage to our browser over "localhost".
+You can find really great examples under "example" folder that are made by using SpaceSockets2. For example, an implementation of "ping" utility or a web server that can send a skeleton webpage to our browser over "localhost".
 
 ```sh
  $ ./make.sh // To build under UNIX like or UNIX clone operating systems that runs Bash shell.
@@ -16,14 +16,17 @@ You can find really great examples under "example" folder that are made by using
  $ fscrift make // To build under Scrift shell.
 ```
 
-## Important warning for developers
-~~Porting SpaceSockets2 on Windows would be amazing. We're planning to add Winsock support to run SpaceSockets2 under Windows.~~
+## A big update for SpaceSockets2: Windows port
+SpaceSockets2 includes WinSock code that can be used if you are compiling your application on Windows. Without changing any lines of your application code, you can port your SpaceSockets2 applications to Windows. 
 
-There is an ongoing development for porting SpaceSockets2 on Winsock. Check our Instagram page for more information about development.
+Refer to the examples for further information.
 
-#### Disclaimer
+### Disclaimer
 SpaceSockets2 is licensed under the terms of MIT License. 
 
-#### Follow us to keep up-to-date!
+### Tutorials for developers
+SpaceSockets2's GitHub site will be coming soon! We'll rewrite example applications and see how easy to write programs with SpaceSockets2 is.
+
+### Follow us to keep up-to-date!
 [SpaceCraft on Instagram](http://instagram.com/spacecraft_tr)
 [SpaceCraft on GitHub](http://github.com/SpaceCraftTR)

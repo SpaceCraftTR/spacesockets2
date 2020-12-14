@@ -4,8 +4,8 @@
 
 int main(){
 
-        SpaceSockets2::udp udp_client("",NO_DEBUG_INFORMATION); /*
-        If you type the same IP address as server to our client, you'll get a nice little binding error with error number 98, which means "socket already in use".
+        SpaceSockets2::udp udp_client("127.0.0.1",WRITE_TO_TERMINAL); /*
+        If you type the same IP address as server to our client, you'll get a nice little binding error with error number 98 on UNIX, which means "socket already in use".
         Leave IP address field empty if you want to use those two applications (both server and client) locally.
         */
         char receiving_buf[1000];

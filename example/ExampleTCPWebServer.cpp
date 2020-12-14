@@ -27,7 +27,8 @@ int main(){
           while(1){
               if(tcp_server.tcp_send_data(message,accept_fd) == SEND_ERROR){
 
-                  std::cout<<"Client loaded website successfully!"<<std::endl;
+                  std::cout<<"Client disconnected, that means page loaded successfully!"<<std::endl;
+                  exit(0);
 
               }
           }
