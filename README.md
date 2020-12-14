@@ -7,7 +7,7 @@ Hello, developers! Here is the SpaceSockets 2.0 (a.k.a SpaceSockets2)!
 
 We've fixed some connection related bugs and added new functionalities to SpaceSockets 2.0. 
 
-You can find really great examples under "example" folder that are made by using SpaceSockets2. For example, an implementation of "ping" utility or a web server that send a skeleton webpage to our browser over "localhost".
+You can find really great examples under "example" folder that are made by using SpaceSockets2. For example, an implementation of "ping" utility or a web server that can send a skeleton webpage to our browser over "localhost".
 
 ```sh
  $ ./make.sh // To build under UNIX like or UNIX clone operating systems that runs Bash shell.
