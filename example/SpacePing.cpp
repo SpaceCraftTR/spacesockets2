@@ -13,7 +13,7 @@ void ping_req(char ip_address[], int pkg_amount = 5){
 
     int success_count = 0, failed_count = 0;
     unsigned char data[2048];
-    SpaceSockets2::icmp spaceping(ip_address,WRITE_TO_FILE);
+    SpaceSockets2::icmp spaceping(SpaceSockets2::dns_resolve(ip_address),WRITE_TO_FILE); //The IP address that is specified might be a domain address.
     spaceping.set_connection_timeout(5);
     std::cout<<"Starting to send ICMP echo request to following address : "<<get_ip_address(spaceping.get_valid_address())<<"\n";
         for(int i = 0; i < pkg_amount; i++){

@@ -1,5 +1,5 @@
 #include "../spacesockets2/SpaceSockets2.hpp"
-#include <vector>
+
 int main(){
 
     char req[] = "GET /index.html HTTP/1.1\r\nHost: example.com\r\nConnection: close\r\n\r\n";
@@ -9,9 +9,14 @@ int main(){
     if(!web_req.tcp_send_data(req,web_req.get_socket_fd())){
 
         web_req.tcp_receive_data(buffer,web_req.get_socket_fd());
+
         std::cout<<buffer;
+
+
     }
 
-
+	#ifdef _WIN32
+	system("pause"); //well, I know it looks like a pity thing to include in our code, but, eh...
+	#endif
     return 0;
 }
