@@ -15,7 +15,7 @@ You can find really great examples under "example" folder that are made by using
 ```sh
  $ fscrift make // To build under Scrift shell.
 ```
-![An example Web client that runs under Linux](images/spacesockets2-linux.PNG)
+![An example Web client that runs under Linux](images/spacesockets2-linux.png)
 
 ## A big update for SpaceSockets2: Windows port
 SpaceSockets2 includes WinSock code that can be used if you are compiling your application on Windows. Without changing any lines of your application code, you can port your SpaceSockets2 applications to Windows. 
