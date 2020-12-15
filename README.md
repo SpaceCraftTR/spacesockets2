@@ -1,5 +1,5 @@
 # SpaceSockets 2.0
-## Makes socket programming much easier and cross-platform for C++ developers!
+## Makes network programming much easier and cross-platform for C++ developers!
 
 Hello, developers! Here is the SpaceSockets 2.0 (a.k.a SpaceSockets2)!
 
