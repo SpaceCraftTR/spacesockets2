@@ -15,6 +15,7 @@ SpaceSockets2 is licensed under the terms of MIT License.
 #include <fstream>
 #include <iostream>
 #include "definitions.hpp"
+#include <stdint.h>
 #include <string>
 #include <cstring>
 
@@ -42,6 +43,23 @@ namespace SpaceSockets2{
 	                        in_addr** address;
 
 	                        if ( (ht = gethostbyname(domain_address) ) == nullptr)
+	                        {
+	                        	
+		                        exit(DNS_ERROR);
+                                }
+                                address = (in_addr**)ht->h_addr_list;
+                        return inet_ntoa(**address);
+                }
+                char* dns_resolve(std::string domain_address){
+							#ifdef _WIN32
+                            int handler;
+							WSADATA wsa_data;
+							handler = WSAStartup(MAKEWORD(2,2), &wsa_data);
+							#endif //_WIN32
+                        	hostent *ht;
+	                        in_addr** address;
+
+	                        if ( (ht = gethostbyname(domain_address.c_str()) ) == nullptr)
 	                        {
 	                        	
 		                        exit(DNS_ERROR);
@@ -172,15 +190,32 @@ namespace SpaceSockets2{
                 /*Receives a data coming from the socket that had been specified.*/
                 template <class tcpType>
                 int tcp_receive_data(tcpType &buffer, int file_desc){
-
-                                        if(recv(file_desc,&buffer,sizeof(buffer),0) < 0){
+                                        
+                                        if((this->received_bytes = recv(file_desc,&buffer,sizeof(buffer),0)) < 0){
 
                                                 process_a_flag("Error "+std::to_string(RECV_ERROR)+", an error occured while receiving data from remote computer, "+inet_ntoa(valid_ip_address),this->flags);
                                                 return RECV_ERROR;
 
                                              }
+                                             
                                         return SUCCESS;
 
+                }
+                int tcp_receive_data(std::string &string, int file_desc){
+                                char* buf = new char[INT32_MAX];
+                                
+                                        int received_bytes = 0;
+                                        if((received_bytes = recv(file_desc,buf,INT32_MAX,0)) < 0){
+
+                                                process_a_flag("Error "+std::to_string(RECV_ERROR)+", an error occured while receiving data from remote computer, "+inet_ntoa(valid_ip_address),this->flags);
+                                                return RECV_ERROR;
+
+                                             }
+                                             this->received_bytes += received_bytes;
+                                             string += buf;
+                                             delete[] buf;
+                                             buf = nullptr;
+                                return SUCCESS;
                 }
                 /*Sends some data to the socket that had been specified.*/
                 template <class tcpSendType>
@@ -196,6 +231,17 @@ namespace SpaceSockets2{
 
 
 
+                }
+                int tcp_send_data(std::string &data, int file_desc){
+
+                        if(send(file_desc,data.c_str(),data.size(),0) < 0){
+
+                                process_a_flag("Error "+std::to_string(SEND_ERROR)+", data couldn't be send. Maybe client is disconnected.",this->flags);
+                                return SEND_ERROR;
+
+                        }
+
+                    return SUCCESS;
                 }
                 //Connects to the server that had been specified with constructor.
                 int connect_to_a_server(){
@@ -308,6 +354,11 @@ namespace SpaceSockets2{
                         this->flags = new_flags;
 
                 }
+                int get_received_bytes(){
+
+                        return this->received_bytes;
+
+                }
                 ~tcp(){ //Destructor of TCP class.
 
                         if(shutdown(socket_fd,SHUT_RDWR) < 0){
@@ -330,7 +381,7 @@ namespace SpaceSockets2{
 
                 }
         private:
-                int flags, socket_fd, bind_fd, listen_fd, accept_fd, connection_limit, optval, port_number, mode;
+                int flags, socket_fd, bind_fd, listen_fd, accept_fd, connection_limit, optval, port_number, received_bytes, mode;
                 sockaddr_in sock_address, connect_sock_address;
                 in_addr valid_ip_address, valid_address2;
         };
@@ -805,6 +856,22 @@ public:
                 return SUCCESS;
 
      }
+                     int tcp_receive_data(std::string &string, int file_desc){
+                                char* buf = new char[INT32_MAX];
+                                
+                                        int received_bytes = 0;
+                                        if((received_bytes = recv(file_desc,buf,INT32_MAX,0)) < 0){
+
+                                                process_a_flag("Error "+std::to_string(RECV_ERROR)+", an error occured while receiving data from remote computer, "+inet_ntoa(valid_ip_address),this->flags);
+                                                return RECV_ERROR;
+
+                                             }
+                                             this->received_bytes = received_bytes;
+                                             string += buf;
+                                             delete[] buf;
+                                             buf = nullptr;
+                                return SUCCESS;
+                }
     /*Sends some data to the socket that had been specified.*/
     template <std::size_t arr_size>
     int tcp_send_data(char (&data)[arr_size], SOCKET file_desc){
@@ -818,6 +885,17 @@ public:
 
             return SUCCESS;
     }
+                int tcp_send_data(std::string &data, int file_desc){
+
+                        if(send(file_desc,data.c_str(),data.size(),0) < 0){
+
+                                process_a_flag("Error "+std::to_string(SEND_ERROR)+", data couldn't be send. Maybe client is disconnected.",this->flags);
+                                return SEND_ERROR;
+
+                        }
+                        std::cout<<data;
+                        return SUCCESS;
+                }
                 //Connects to the server that had been specified with constructor.
                 int connect_to_a_server(){
 

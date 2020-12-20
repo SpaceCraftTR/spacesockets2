@@ -6,6 +6,7 @@ This headers purpose is to declare constant values for SpaceSockets2.
 2020, Ali Sancakli <spacecraft.tr@gmail.com>
 
 */
+#include <stdint.h>
 #ifdef __unix__
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -40,7 +41,6 @@ This headers purpose is to declare constant values for SpaceSockets2.
 #define PACKAGE_ERROR 1500
 #define DNS_ERROR 2000
 #define SUCCESS 0
-
 
 /*Internet Protocol standards*/
 #define IPV4 AF_INET
