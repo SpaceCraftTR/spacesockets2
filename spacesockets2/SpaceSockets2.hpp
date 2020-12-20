@@ -490,6 +490,11 @@ namespace SpaceSockets2{
                         flags = new_flags;
 
                 }
+		int get_received_bytes(){
+			
+			return this->recv_fd;
+		
+		}
                 void close_connection(int socket){
 
                         if(shutdown(socket,SHUT_RDWR) < 0){
@@ -657,6 +662,11 @@ namespace SpaceSockets2{
 
 
                 }
+		int get_received_bytes(){
+			
+			return this->recv_id;
+			
+		}
                 int get_received_info_type(){
 
                         return receive_header.type;
@@ -846,7 +856,7 @@ public:
     template <std::size_t arr_size>
      int tcp_receive_data(char (&buffer)[arr_size],  SOCKET file_desc){
 
-                        if(recv(file_desc,buffer,arr_size,0) == SOCKET_ERROR){
+                        if((this->received_bytes = recv(file_desc,buffer,arr_size,0)) == SOCKET_ERROR){
 
                                     process_a_flag("Error "+std::to_string(RECV_ERROR)+", an error occured while receiving data from remote computer, "+inet_ntoa(valid_ip_address),this->flags);
                                     return RECV_ERROR;
@@ -859,14 +869,13 @@ public:
                      int tcp_receive_data(std::string &string, int file_desc){
                                 char* buf = new char[INT32_MAX];
                                 
-                                        int received_bytes = 0;
-                                        if((received_bytes = recv(file_desc,buf,INT32_MAX,0)) < 0){
+                                        
+                                        if((this->received_bytes = recv(file_desc,buf,INT32_MAX,0)) < 0){
 
                                                 process_a_flag("Error "+std::to_string(RECV_ERROR)+", an error occured while receiving data from remote computer, "+inet_ntoa(valid_ip_address),this->flags);
                                                 return RECV_ERROR;
 
                                              }
-                                             this->received_bytes = received_bytes;
                                              string += buf;
                                              delete[] buf;
                                              buf = nullptr;
@@ -893,7 +902,7 @@ public:
                                 return SEND_ERROR;
 
                         }
-                        std::cout<<data;
+                        
                         return SUCCESS;
                 }
                 //Connects to the server that had been specified with constructor.
@@ -961,10 +970,16 @@ int connect_to_a_server(char ip_address[], int port_number = PORT){
                         }
 
                 }
+    int get_received_bytes(){
+    	
+    		return this->received_bytes;
+    	
+	}
 private:
     int flags = 0;
     int mode = 0;
     int connection_limit;
+    int received_bytes = 0;
     unsigned short int port_number;
     int handler;
     WSADATA wsa_data;
@@ -1029,7 +1044,7 @@ public:
 
                                int sock_addr_size = sizeof(socket_address);
 
-                                 if(recvfrom(socket_fd,data,array_size,0,(sockaddr*)&socket_address,&sock_addr_size) == SOCKET_ERROR){
+                                 if((this->received_bytes = recvfrom(socket_fd,data,array_size,0,(sockaddr*)&socket_address,&sock_addr_size)) == SOCKET_ERROR){
 
                                          process_a_flag("No reply from "+get_ip_address(this->valid_ip_address)+"!",this->flags);
                                         return RECVFROM_ERROR;
@@ -1042,7 +1057,12 @@ public:
                                 }
 
                 }
-                 int get_port_number(){
+		int get_received_bytes(){
+			
+			return this->received_bytes;
+			
+		}
+                int get_port_number(){
 
                         return this->port_number;
 
@@ -1110,7 +1130,7 @@ public:
 
                 }
 private:
-	int flags, port_number, handler;
+	int flags, port_number, handler, received_bytes;
 	SOCKET socket_fd;
 	WSADATA wsa_data;
 	sockaddr_in socket_address;
