@@ -54,7 +54,7 @@ This headers purpose is to declare constant values for SpaceSockets2.
 #define SERVER_TCP 1<<4
 
 /*Logging function, can be used for debugging purposes.*/
-void process_a_flag(std::string information_text, int flag){
+inline void process_a_flag(std::string information_text, int flag){
 
         if(flag & WRITE_TO_TERMINAL){
 
@@ -71,7 +71,7 @@ void process_a_flag(std::string information_text, int flag){
 
 
 }
-std::string get_ip_address(in_addr valid_ip_address){ //Returns target IP address as a string.
+inline std::string get_ip_address(in_addr valid_ip_address){ //Returns target IP address as a string.
 
         return inet_ntoa(valid_ip_address);
 
