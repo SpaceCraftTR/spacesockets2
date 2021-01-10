@@ -33,7 +33,7 @@ SpaceSockets2 is licensed under the terms of MIT License.
 
 
 namespace SpaceSockets2{
-                char* dns_resolve(char domain_address[]){
+                inline char* dns_resolve(char domain_address[]){
 							#ifdef _WIN32
                             int handler;
 							WSADATA wsa_data;
@@ -50,7 +50,7 @@ namespace SpaceSockets2{
                                 address = (in_addr**)ht->h_addr_list;
                         return inet_ntoa(**address);
                 }
-                char* dns_resolve(std::string domain_address){
+                inline char* dns_resolve(std::string domain_address){
 							#ifdef _WIN32
                             int handler;
 							WSADATA wsa_data;
